@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  CallsView.swift
 //  Contacts
 //
 //  Created by Alex on 2025-10-06.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct CallsView: View {
     var body: some View {
-        HomeView()
+        Text("Calls View!")
     }
 }
 
 #Preview {
-    ContentView()
+    CallsView()
 }
