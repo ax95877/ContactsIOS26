@@ -38,7 +38,7 @@ struct ContactDetailView: View {
                             .font(.system(size: 36,weight: .semibold))
                             .foregroundColor(.white)
                     }
-                    .scaleEffect( 1 - 2*collapseProgress<=0 ?0 : 1 - 2*collapseProgress)
+                    .scaleEffect( 1 - 2.5*collapseProgress<=0 ?0 : 1 - 2.5*collapseProgress)
                     
                     // Action Buttons
                     HStack(spacing:20){
@@ -172,7 +172,7 @@ struct ContactDetailView: View {
                     .foregroundColor(.white)
                
             }
-            .scaleEffect( 1 - 2*collapseProgress<=0 ?0 : 1 - 2*collapseProgress)
+            .scaleEffect( 1 - 2.5*collapseProgress<=0 ?0 : 1 - 2.5*collapseProgress)
         }
         // Initialize header height and baseline scroll position
         .onAppear {
@@ -192,7 +192,7 @@ struct ContactDetailActionButton:View{
                 .font(.system(size: 20,weight:.medium))
                 .foregroundStyle(.white.opacity(0.9))
                 .frame(width:56,height:56)
-                .glassEffect(.regular.tint(.blue.opacity(0.5)),in:RoundedRectangle(cornerRadius: 16))
+                .conditionalGlassEffect(.blue.opacity(0.5),in:RoundedRectangle(cornerRadius: 16))
         }
     }
 }
@@ -221,6 +221,26 @@ struct ContactInfoRow:View{
         }
     }
 }
+
+struct ConditionalGlassEffect: ViewModifier {
+    var color: Color
+    var shape: Shape
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, *) {
+            // Apply the glass effect when available (uses default style).
+            content.glassEffect(.regular.tint(color),in: shape)
+        } else {
+            content
+        }
+    }
+}
+
+extension View {
+    func conditionalGlassEffect(_ color: Color = .blue.opacity(0.5), in shape: some Shape = RoundedRectangle(cornerRadius: 16)) -> some View {
+        modifier(ConditionalGlassEffect(color: color,shape: shape))
+    }
+}
+
 
 #Preview {
     ContactDetailView(contact:Contact(name: "Emily Johnson", phoneNumber: "+1 (555) 123-4567", email: "emily.j@email.com", initial: "EJ", color: .blue))
